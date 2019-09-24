@@ -1,0 +1,14 @@
+/* AWINIC AW8695 Haptic */
+&pm8150b_haptics{
+    status = "disabled";
+};
+&qupv3_se7_i2c {
+    aw8695_haptic@5A {
+        compatible = "awinic,aw8695_haptic";
+        reg = <0x5A>;
+        reset-gpio = <&tlmm 94 0>;
+        irq-gpio = <&tlmm 95 0>;
+        status = "okay";
+    };
+};
+/* AWINIC AW8695 Haptic End */

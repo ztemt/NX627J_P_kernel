@@ -1,0 +1,132 @@
+&mtp_batterydata {
+	//#include "fg-gen4-batterydata-alium-3600mah-nubia.dtsi"
+	#include "fg-gen4-batterydata-4900mah.dtsi"
+};
+
+&pm8150b_charger {
+	qcom,auto-recharge-soc = <99>;
+	qcom,auto-recharge-vbat-mv = <4340>;
+	qcom,sec-charger-config = <1>;
+	qcom,float-option = <1>;
+	qcom,chg-term-src = <1>;
+	qcom,chg-term-current-ma = <(-300)>;
+	//qcom,chg-term-base-current-ma = <(-300)>;
+	qcom,fcc-max-ua = <4800000>;
+	qcom,fv-max-uv = <4400000>;
+	qcom,usb-icl-ua = <3000000>;
+	
+	qcom,step-chg-base-soc;						//use nubia step soc and stop qcom sw step if specified
+	qcom,step-chg-base-soc-value = <70>;		//if soc higher than this value, then reduce the fcc
+	qcom,step-chg-base-soc-current = <3300000>;//the reduce the fcc value, mA
+	
+	qcom,jeita-warm-stop-chg-soc = <70>; //if battery is warm, stop chg when soc is higher than this threshold
+	
+	qcom,lcd-on-limit-enable;
+	qcom,lcd-on-limit-temp = <400>;
+	qcom,lcd-on-limit-fcc = <1200000>;
+	
+};
+
+&pm8150b_fg {
+	qcom,fg-force-load-profile;
+	qcom,fg-sys-term-current = <(-400)>;
+	qcom,fg-cutoff-voltage = <3300>;
+	qcom,fg-esr-cal-temp-thresh = <10 45>;
+	nubia,use-default-batt-id = <100>;
+};
+
+&spmi_bus {
+	qcom,pm8150b@2 {
+		neo,battery {
+			compatible = "nubia,neo-battery";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			//reg = <0x1000 0x700>;
+			neo,batt-capacity-uah = <5020000>;
+			neo,batt-cutoff-mv = <3450>;
+			neo,batt-soc-increase-per-sec = <10>;
+			neo,batt-soc-decrease-per-sec = <60>;
+		};
+	};
+};
+
+/*
+&soc {
+	dock-charger {
+		status = "okay";
+		compatible = "dock,charger";
+		dock,typec-vbus-int-gpio = <&tlmm 90 0x2003>;
+		//dock,typec-vbus-en-gpio = <&tlmm 89 0>;
+		dock,dock-vbus-int-gpio = <&tlmm 91 0x2003>;
+		dock,dock-vbus-en-gpio = <&tlmm 88 0>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <90 0x2003>, 
+					 <91 0x2003>; //IRQF_ONESHOT | IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING
+		interrupt-names = "typec-vbus-irq", "dock-vbus-irq";
+		pinctrl-names = "dock_active", "dock_suspend";
+		pinctrl-0 = <&typec_vbus_int_active &typec_vbus_en_active>;
+		pinctrl-1 = <&typec_vbus_int_suspend &typec_vbus_en_suspend>;
+	};
+};
+
+&tlmm {
+	typec_vbus_int_active: typec_vbus_int_active {
+		mux {
+			pins = "gpio90", "gpio91";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio90", "gpio91";
+			drive-strength = <6>;
+			bias-disable;
+			input-enable;
+		};
+	};
+
+	typec_vbus_int_suspend: typec_vbus_int_suspend {
+		mux {
+			pins = "gpio90", "gpio91";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio90", "gpio91";
+			drive-strength = <6>;
+			bias-disable;
+			input-enable;
+		};
+	};
+
+	typec_vbus_en_active: typec_vbus_en_active {
+        // active state 
+        mux {
+            pins = "gpio88";
+            function = "gpio";
+         };
+
+        config {
+            pins = "gpio88";
+            drive-strength = <2>;
+            bias-disable;
+            bias-pull-down;
+            output-low;
+        };
+    };
+
+    typec_vbus_en_suspend: typec_vbus_en_suspend {
+        // sleep state 
+        mux {
+			pins = "gpio88";
+			function = "gpio";
+        };
+
+        config {
+            pins = "gpio88";
+            drive-strength = <2>;
+            bias-pull-up;
+        };
+    };	
+};
+*/
+

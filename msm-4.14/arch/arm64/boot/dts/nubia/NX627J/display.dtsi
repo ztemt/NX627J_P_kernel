@@ -1,0 +1,61 @@
+/*
+ * nubia overwrite dts
+ */
+#include "dsi-panel-ew811-1080-2340-amoled-cmd.dtsi"
+#include "dsi-panel-himax-720-1520-amoled-cmd.dtsi"
+&soc {
+	nubia_front_dsi_panel_pwr_supply: nubia_front_dsi_panel_pwr_supply {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <62000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-on-sleep = <1>;
+		};
+	};
+	nubia_back_dsi_panel_pwr_supply: nubia_back_dsi_panel_pwr_supply {
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	/* add for NX627 Primary panel */
+	dsi_ew811_1080_2340_amoled_cmd_display: qcom,dsi-display_0 {
+		label = "dsi_ew811_1080_2340_amoled_cmd_display";
+		qcom,display-type = "primary";
+
+		qcom,dsi-ctrl-num = <0>;
+		qcom,dsi-phy-num = <0>;
+		qcom,dsi-select-clocks = "mux_byte_clk0", "mux_pixel_clk0";
+
+		qcom,dsi-panel = <&dsi_ew811_1080_2340_amoled_cmd>;
+		qcom,dsi-display-active;
+	};
+
+	/* add for NX627 Secondary panel */
+	dsi_himax_720_1520_cmd_display: qcom,dsi-display_1 {
+
+		label = "dsi_himax_720_1520_amoled_cmd_display";
+		qcom,display-type = "secondary";
+
+		qcom,dsi-ctrl-num = <1>;
+		qcom,dsi-phy-num = <1>;
+		qcom,dsi-select-clocks = "mux_byte_clk1", "mux_pixel_clk1";
+
+		qcom,dsi-panel = <&dsi_himax_720_1520_cmd>;
+		qcom,dsi-display-active;
+	};
+};
+
+&sde_dsi{
+		qcom,dsi-display-list =
+			<&dsi_ew811_1080_2340_amoled_cmd_display>;
+};
+&sde_dsi1{
+		qcom,dsi-display-list =
+			<&dsi_himax_720_1520_cmd_display>;
+};

@@ -1,0 +1,23 @@
+/*
+ * nubia overwrite dts
+ */
+&soc {
+	nubia_front_dsi_panel_pwr_supply: nubia_front_dsi_panel_pwr_supply {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <62000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-on-sleep = <1>;
+		};
+	};
+	nubia_back_dsi_panel_pwr_supply: nubia_back_dsi_panel_pwr_supply {
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+};

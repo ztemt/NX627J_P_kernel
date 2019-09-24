@@ -1,0 +1,155 @@
+/*
+ * Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&qupv3_se9_i2c {
+	/delete-node/ nubia@39;
+};
+
+&pcie1 {
+    status = "disable";
+};
+
+&qupv3_se9_i2c {
+	status = "ok";
+
+	stk@47 {
+		compatible = "stk,stk3x3x";
+		reg = <0x47>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <117 0x2>;
+		vdd-supply = <&pm8150l_l8>;
+		vio-supply = <&pm8150l_l7>;
+		pinctrl-names = "stk_irq_active","stk_irq_suspend";
+		pinctrl-0 = <&stk_irq_active>;
+		pinctrl-1 = <&stk_irq_suspend>;
+		stk,irq-gpio = <&tlmm 117 0x02>;
+		stk,state-reg = <0x0>;
+		stk,psctrl-reg = <0xB1>;
+		stk,alsctrl-reg = <0x32>;
+		stk,ledctrl-reg = <0xA0>;
+		stk,wait-reg = <0x3F>;
+		stk,ps-thdh = <8200>;
+		stk,ps-thdl = <8000>;
+		stk,transmittance = <500>;
+		stk,use-fir;
+	};
+
+	rohm@38 {
+		compatible = "rohm,bh1745";
+		reg = <0x38>;
+		vdd-supply = <&pm8150l_l7>;
+		vio-supply = <&pm8150l_l8>;
+		bh1745,tp_moudle_count = <3>;
+		/*[module_id] [golden judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		bh1745,cal_data0 = "0","162","500","270","1832","1648","0","0",
+		/*[white judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"184","166","111","531","460","0","0",
+		/*[balck judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"554","340","-138","1586","3490","0","0",
+		/*[blue judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"265","547","351","2337","1923","0","0";
+		/*[module_id] [golden judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		bh1745,cal_data1 = "1","242","1565","932","9035","8607","0","0",
+		/*[white judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"189","146","88","598","533","0","0",
+		/*[balck judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"1040","1911","310","11509","9976","0","0",
+		/*[blue judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"265","547","351","2337","1923","0","0";
+		/*[module_id] [golden judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		bh1745,cal_data2 = "2","199","488","274","2283","2068","0","0",
+		/*[white judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"194","216","113","886","821","0","0",
+		/*[balck judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"396","2301","547","13243","12687","0","0",
+		/*[blue judge] r[0] r[1] g[0] g[1] b[0] b[1]*/
+		"265","547","351","2337","1923","0","0";
+	};
+
+	ams@39 {
+		compatible = "tmd2725";
+		reg = <0x39>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <104 0>;
+		vdd-supply = <&pm8150l_l7>;
+		vio-supply = <&pm8150l_l8>;
+		tmd,irq-gpio = <&tlmm 104 0x00>;
+		pinctrl-names = "tmd2725_default","tmd2725_sleep";
+		pinctrl-0 = <&tmd2725_default>;
+		pinctrl-1 = <&tmd2725_sleep>;
+		tmd,power_always_on = <1>;
+		tmd,has_als = <1>;
+		tmd,has_ps = <1>;
+		tmd,tp_moudle_count = <3>;
+		//[module_id] [which_seg] [d_factor] ch0[1] ch1[0] ch0[1] ch1[0]
+		tmd,tp0 = "0","0","2487","1000","162","312","34";
+		//[module_id] [which_seg] [d_factor] ch0[1] ch1[0] ch0[1] ch1[0]
+		tmd,tp1 = "1","1","2487","1000","162","312","34";
+		//[module_id] [which_seg] [d_factor] ch0[1] ch1[0] ch0[1] ch1[0]
+		tmd,tp2 = "2","0","2487","1000","162","312","34";
+	};
+};
+
+&pm8150_s4 {
+	status = "ok";
+	regulator-boot-on;
+};
+
+&pm8150l_l8 {
+	status = "ok";
+	regulator-always-on;
+};
+
+&pm8150l_l7 {
+	status = "ok";
+	qcom,init-voltage = <3000000>;
+	regulator-always-on;
+};
+
+&tlmm {
+	tmd2725_int_pin {
+		tmd2725_default: tmd2725_default {
+			config {
+				pins = "gpio104";
+				drive-strength = <6>;
+				bias-pull-up;
+			};
+		};
+		tmd2725_sleep: tmd2725_sleep {
+			config {
+				pins = "gpio104";
+				drive-strength = <2>;
+				bias-pull-up;
+			};
+		};
+	};
+};
+
+&tlmm {
+	stk_int_pin {
+		stk_irq_active: stk_irq_active {
+			config {
+				pins = "gpio117";
+				drive-strength = <6>;
+				bias-pull-up;
+			};
+		};
+		stk_irq_suspend: stk_irq_suspend {
+			config {
+				pins = "gpio117";
+				drive-strength = <2>;
+				bias-pull-up;
+			};
+		};
+	};
+};

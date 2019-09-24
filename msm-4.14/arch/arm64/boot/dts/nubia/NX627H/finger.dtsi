@@ -1,0 +1,254 @@
+/*
+ * Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+&soc {
+       /* used for fingerprint device as platform device added by nubia start*/
+       goodix_fp{
+                status = "ok";
+                //reg = <0>;
+                compatible = "goodix,fingerprint";
+                spi-max-frequency = <4800000>;
+                pinctrl-names = "gf_fp_active", "gf_fp_suspend";
+                pinctrl-0 = <&goodix_pwr_vdd_active &goodix_reset_active &goodix_irq_active>;
+                pinctrl-1 = <&goodix_pwr_vdd_sleep &goodix_reset_sleep &goodix_irq_sleep>;
+                goodix,goodix_reset = <&tlmm 102 0>;
+                goodix,goodix_irq = <&tlmm 101 0>;
+                goodix,goodix_pwr_vdd = <&tlmm 16 0>;
+        };
+	goodix_fp_r{
+	        status = "ok";
+	        //reg = <0>;
+	        compatible = "goodix,fingerprint_r";
+	        spi-max-frequency = <4800000>;
+	        pinctrl-names = "gf_fp_r_active", "gf_fp_r_suspend";
+	        pinctrl-0 = <&goodix_reset_r_active &goodix_irq_r_active>;
+	        pinctrl-1 = <&goodix_reset_r_sleep &goodix_irq_r_sleep>;
+	        goodix,goodix_reset_r = <&tlmm 125 0>;
+	        goodix,goodix_irq_r = <&tlmm 118 0>;
+	};
+	/* used for fingerprint device as platform device added by nubia end*/
+};
+
+/*****finger pinctrl start *****/
+&tlmm {
+		goodix_pwr_vdd {
+			goodix_pwr_vdd_active: goodix_pwr_vdd_active {
+				mux {
+					pins = "gpio16";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio16";
+					drive-strength = <6>;
+					bias-pull-up;
+				};
+			};
+
+			goodix_pwr_vdd_sleep: goodix_pwr_vdd_sleep {
+				mux {
+					pins = "gpio16";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio16";
+					drive-strength = <6>;
+					bias-pull-up;
+				};
+			};
+		};
+		goodix_pwr_r_vdd {
+                        goodix_pwr_r_vdd_active: goodix_pwr_r_vdd_active {
+                                mux {
+                                        pins = "gpio16";
+                                        function = "gpio";
+                                };
+
+                                config {
+                                        pins = "gpio16";
+                                        drive-strength = <6>;
+                                        bias-pull-up;
+                                };
+                        };
+
+                        goodix_pwr_r_vdd_sleep: goodix_pwr_r_vdd_sleep {
+                                mux {
+                                        pins = "gpio16";
+                                        function = "gpio";
+                                };
+
+                                config {
+                                        pins = "gpio16";
+                                        drive-strength = <6>;
+                                        bias-pull-up;
+                                };
+                        };
+                };
+		goodix_reset {
+			goodix_reset_active: goodix_reset_active {
+				mux {
+					pins = "gpio102";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio102";
+					drive-strength = <6>;
+					bias-pull-up;
+				};
+			};
+
+			goodix_reset_sleep: goodix_reset_sleep {
+				mux {
+					pins = "gpio102";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio102";
+					drive-strength = <6>;
+					bias-pull-up;
+				};
+			};
+		};
+		goodix_reset_r {
+                        goodix_reset_r_active: goodix_reset_r_active {
+                                mux {
+                                        pins = "gpio125";
+                                        function = "gpio";
+                                };
+
+                                config {
+                                        pins = "gpio125";
+                                        drive-strength = <6>;
+                                        bias-pull-up;
+                                };
+                        };
+
+                        goodix_reset_r_sleep: goodix_reset_r_sleep {
+                                mux {
+                                        pins = "gpio125";
+                                        function = "gpio";
+                                };
+
+                                config {
+                                        pins = "gpio125";
+                                        drive-strength = <6>;
+                                        bias-pull-up;
+                                };
+                        };
+                };
+		goodix_irq {
+			goodix_irq_active: goodix_irq_active {
+				mux {
+					pins = "gpio101";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio101";
+					drive-strength = <6>;
+					bias-disable;
+				};
+			};
+
+			goodix_irq_sleep: goodix_irq_sleep {
+				mux {
+					pins = "gpio101";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio101";
+					drive-strength = <6>;
+					bias-disable;
+				};
+			};
+		};
+		goodix_irq_r {
+                        goodix_irq_r_active: goodix_irq_r_active {
+                                mux {
+                                        pins = "gpio118";
+                                        function = "gpio";
+                                };
+
+                                config {
+                                        pins = "gpio118";
+                                        drive-strength = <6>;
+                                        bias-disable;
+                                };
+                        };
+
+                        goodix_irq_r_sleep: goodix_irq_r_sleep {
+                                mux {
+                                        pins = "gpio118";
+                                        function = "gpio";
+                                };
+
+                                config {
+                                        pins = "gpio118";
+                                        drive-strength = <6>;
+                                        bias-disable;
+                                };
+                        };
+                };
+};
+
+/* Depend on hardware SCH, overrides conflict  start*/
+&tlmm {
+	pcie1 {
+		/delete-node/ pcie1_perst_default;
+	};
+
+	aqt_intr {
+		/delete-node/ aqt_intr_default;
+	};
+
+	/delete-node/ cam_sensor_mclk3_active;
+	/delete-node/ cam_sensor_mclk3_suspend;
+	/delete-node/ usb2_id_det_default;
+	/delete-node/ emac_rgmii_rxd1;
+};
+
+&pcie1 {
+	/delete-property/ perst-gpio;
+};
+
+&extcon_usb1 {
+	/delete-property/ id-gpio;
+	/delete-property/ pinctrl-0;
+	/delete-property/ pinctrl-names;
+};
+
+&usb1 {
+	/delete-property/ extcon;
+	status = "disabled";
+};
+
+&vendor {
+	/delete-property/ extcon_usb1;
+};
+
+&cam_cci0 {
+	qcom,cam-sensor@3 {
+		/delete-property/ gpios;
+	};
+	qcom,cam-sensor@5 {
+		/delete-property/ gpios;
+	};
+};
+
+&aqt1000_cdc {
+	/delete-property/ qcom,gpio-connect;
+};
+/* Depend on hardware SCH, overrides conflict  end*/

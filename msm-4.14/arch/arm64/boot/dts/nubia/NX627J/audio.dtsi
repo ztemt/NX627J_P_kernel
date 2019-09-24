@@ -1,0 +1,34 @@
+&snd_934x {
+	qcom,audio-routing =
+		"AIF4 VI", "MCLK",
+		"RX_BIAS", "MCLK",
+		"MADINPUT", "MCLK",
+		"hifi amp", "LINEOUT1",
+		"hifi amp", "LINEOUT2",
+		"AMIC1", "MIC BIAS1",
+		"MIC BIAS1", "Handset Mic",
+		"AMIC2", "MIC BIAS2",
+		"MIC BIAS2", "Headset Mic",
+		"AMIC3", "MIC BIAS3",
+		"MIC BIAS3", "Secondary Mic",
+		"DMIC0", "MIC BIAS1",
+		"MIC BIAS1", "Digital Mic0",
+		"DMIC1", "MIC BIAS1",
+		"MIC BIAS1", "Digital Mic1",
+		"DMIC2", "MIC BIAS3",
+		"MIC BIAS3", "Digital Mic2",
+		"DMIC3", "MIC BIAS3",
+		"MIC BIAS3", "Digital Mic3",
+		"DMIC4", "MIC BIAS4",
+		"MIC BIAS4", "Digital Mic4",
+		"DMIC5", "MIC BIAS4",
+		"MIC BIAS4", "Digital Mic5",
+		"SpkrLeft IN", "SPK1 OUT",
+		"SpkrRight IN", "SPK2 OUT";
+
+    qcom,cdc-ext-amp-gpios = <&tlmm 97 0>;
+    qcom,msm-mbhc-usbc-audio-supported = <1>;
+    qcom,mbhc-audio-jack-type = "4-pole-jack";
+    qcom,msm-mbhc-hphl-swh = <0>;
+    qcom,msm-mbhc-gnd-swh = <0>;
+};

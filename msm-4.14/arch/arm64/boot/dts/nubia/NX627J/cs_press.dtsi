@@ -1,0 +1,34 @@
+&qupv3_se8_i2c {
+        status = "okay"; 
+	cs_press@50 {
+		compatible = "qcom,cs_press";
+		reg = <0x50>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <120 0x2800>;
+		press,irq-gpio = <&tlmm 120 0x2800>;
+		press,rst-gpio = <&tlmm 121 0x0>;
+                pinctrl-names = "cs_press_irq_pull_up";
+                pinctrl-0 = <&cs_press_irq_pull_up>;
+		vdd_3v3-supply = <&pm8150_l13>;
+		status = "okay";	
+	};
+};
+
+&tlmm {
+     cs_press_pinctrl{
+         cs_press_irq_pull_up: cs_press_irq_pull_up {
+                mux {
+                        pins = "gpio120";
+                        function = "gpio";
+                };
+
+                config {
+                        pins = "gpio120";
+                        drive-strength = <16>;
+                        bias-pull-up;
+                        input-enable;
+                };
+
+        };
+    };
+};

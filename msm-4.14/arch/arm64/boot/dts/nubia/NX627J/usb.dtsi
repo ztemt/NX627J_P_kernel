@@ -1,0 +1,26 @@
+/*
+ * nubia overrides dts
+ */
+
+&usb0 {
+	dwc3@a600000 {
+		usb-phy = <&usb2_phy0>, <&usb_nop_phy>;
+		maximum-speed = "high-speed";
+	};
+};
+/* Primary USB port related QMP USB DP Combo PHY */
+&usb_qmp_dp_phy {
+	status = "disabled";
+};
+
+/* Secondary USB port related QMP PHY & it disabled in the source dtsi file */
+&usb_qmp_phy {
+        status = "disabled";
+};
+/*gpu dp related config*/
+&sde_dp {
+	status = "disabled";
+};
+&mdss_mdp {
+	connectors = <&sde_rscc &sde_wb &sde_dsi &sde_dsi1>;
+};
